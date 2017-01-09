@@ -113,7 +113,7 @@ keystone_node = search_env_filtered(:node, "roles:keystone-server AND keystone_p
 
 if !keystone_node.nil?
   file "#{nss_dir}/keystone_pki_ca.pem" do
-    content keystone_node[:keystone][:pki][:content][:ca]
+    content keystone_node[:keystone][:signing][:ca_certs]
   end
 
   bash "convert signing ca certificate to nss db format" do
@@ -125,7 +125,7 @@ chown #{node[:apache][:user]}:#{node[:apache][:group]} #{nss_dir}/*.db
   end
 
   file "#{nss_dir}/keystone_pki_signing_cert.pem" do
-    content keystone_node[:keystone][:pki][:content][:signing_cert]
+    content keystone_node[:keystone][:signing][:certfile]
   end
 
   bash "convert signing certificate to nss db format" do
